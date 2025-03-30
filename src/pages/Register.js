@@ -13,7 +13,8 @@ function Register() {
     const onFinish = async(values)=>{
         try{
           dispatch(ShowLoading());
-          const response= await axios.post("/api/users/register", values);
+          // const response= await axios.post("/api/users/register", values);
+          const response= await axios.post(`${process.env.REACT_APP_API_URL}/users`, values);
           dispatch(HideLoading());
           if(response.data.success){
             message.success(response.data.message);

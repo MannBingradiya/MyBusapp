@@ -17,7 +17,7 @@ function BookNow() {
   const getBus = async () => {
     try {
       dispatch(ShowLoading());
-      const response = await axiosInstance.post("/api/buses/get-bus-by-id", {
+      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/buses/get-bus-by-id`, {
         _id: params.id
       });
       dispatch(HideLoading());
@@ -36,7 +36,7 @@ function BookNow() {
     async ({transactionId}) => {
       try {
         dispatch(ShowLoading());
-        const response = await axiosInstance.post("/api/bookings/book-seat", {
+        const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/bookings/book-seat`, {
           bus: bus._id,
           seats: selectedSeats,
           transactionId
@@ -61,7 +61,8 @@ function BookNow() {
       // navigate("/bookings"); // Redirect to success page
       try {
         dispatch(ShowLoading());
-        const response = await axiosInstance.post("/api/bookings/make-payment", {
+        
+        const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/bookings/make-payment`, {
           amount: selectedSeats.length * bus.fare *100,
         });
         dispatch(HideLoading());
@@ -83,7 +84,7 @@ function BookNow() {
   const onToken = async (token) => {
     try {
       dispatch(ShowLoading());
-      const response = await axiosInstance.post("/api/bookings/make-payment", {
+      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/bookings/make-payment`, {
         token,
         amount: selectedSeats.length * bus.fare *100,
       });

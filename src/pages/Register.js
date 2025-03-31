@@ -13,30 +13,29 @@ function Register() {
     const onFinish = async(values)=>{
         try{
           dispatch(ShowLoading());
-          // const response= await axios.post("/api/users/register", values);
-          const response= await axios.post(`${process.env.REACT_APP_API_URL}/users`,
-            JSON.stringify(values),  // 🔹 Ensure values are sent as JSON string
-            {
-                headers: { 
-                    "Content-Type": "application/json"
-                },
-            });
+          const response= await axios.post(`${process.env.REACT_APP_API_URL}/users/register`, values);
+          // const response= await axios.post(`${process.env.REACT_APP_API_URL}/users`,values, 
+          //   {
+          //       headers: { 
+          //           "Content-Type": "application/json"
+          //       },
+          //   });
 
-          console.log("Full Response:", response);
-          console.log("Response Data:", response.data); 
+          // console.log("Full Response:", response);
+          // console.log("Response Data:", response.data); 
           dispatch(HideLoading());
           if(response.data.success){
             message.success(response.data.message);
-            message.success(response.data.message || "User registered successfully!");
+            // message.success(response.data.message || "User registered successfully!");
             navigate("/login");  // navigate the user to login page after registration.
           }else{
-            // message.error(response.data.message);
-            message.error(response.data?.message || "Registration failed! No message from server.");
+            message.error(response.data.message);
+            // message.error(response.data?.message || "Registration failed! No message from server.");
           }
         }catch(error){
           dispatch(HideLoading());
-          // message.error(error.message);
-          message.error(error.message || "An unknown error occurred.");
+          message.error(error.message);
+          // message.error(error.message || "An unknown error occurred.");
           
         }
     };

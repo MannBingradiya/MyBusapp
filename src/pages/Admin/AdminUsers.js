@@ -14,7 +14,7 @@ function AdminUsers() {
   const getUsers = async() =>{
     try{
       dispatch(ShowLoading());
-      const response = await axiosInstance.post("/api/users/get-all-users", {});
+      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/users/get-all-users`, {});
       dispatch(HideLoading());
       if(response.data.success){
         setUsers(response.data.data);

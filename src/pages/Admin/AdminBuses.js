@@ -62,7 +62,7 @@ function AdminBuses() {
   const getBuses = async() =>{
     try{
       dispatch(ShowLoading());
-      const response = await axiosInstance.post("/api/buses/get-all-buses", {});
+      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/buses/get-all-buses`, {});
       dispatch(HideLoading());
       if(response.data.success){
         setBuses(response.data.data);
@@ -78,7 +78,7 @@ function AdminBuses() {
   const deleteBus = async(id) =>{
     try{
       dispatch(ShowLoading());
-      const response = await axiosInstance.post("/api/buses/delete-bus", {
+      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/buses/delete-bus`, {
         _id: id,
       });
       dispatch(HideLoading());

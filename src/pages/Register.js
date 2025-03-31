@@ -23,13 +23,17 @@ function Register() {
           dispatch(HideLoading());
           if(response.data.success){
             message.success(response.data.message);
+            message.success(response.data.message || "User registered successfully!");
             navigate("/login");  // navigate the user to login page after registration.
           }else{
-            message.error(response.data.message);
+            // message.error(response.data.message);
+            message.error(response.data?.message || "Registration failed! No message from server.");
           }
         }catch(error){
           dispatch(HideLoading());
-          message.error(error.message);
+          // message.error(error.message);
+          message.error(error.message || "An unknown error occurred.");
+          
         }
     };
   return (

@@ -16,8 +16,9 @@ function Register() {
           // const response= await axios.post("/api/users/register", values);
           const response= await axios.post(`${process.env.REACT_APP_API_URL}/users`, values,
             {
-              headers: { "Content-Type": "application/json" }
-          }
+              headers: { "Content-Type": "application/json" },
+          },
+          
           );
           dispatch(HideLoading());
           if(response.data.success){

@@ -17,9 +17,10 @@ function Register() {
           const response= await axios.post(`${process.env.REACT_APP_API_URL}/users`, values,
             {
               headers: { "Content-Type": "application/json" },
-          },
-          
-          );
+          });
+
+          console.log("Full Response:", response);
+          console.log("Response Data:", response.data); 
           dispatch(HideLoading());
           if(response.data.success){
             message.success(response.data.message);

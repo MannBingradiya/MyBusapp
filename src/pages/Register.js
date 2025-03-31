@@ -14,10 +14,13 @@ function Register() {
         try{
           dispatch(ShowLoading());
           // const response= await axios.post("/api/users/register", values);
-          const response= await axios.post(`${process.env.REACT_APP_API_URL}/users`, values,
+          const response= await axios.post(`${process.env.REACT_APP_API_URL}/users`,
+            JSON.stringify(values),  // 🔹 Ensure values are sent as JSON string
             {
-              headers: { "Content-Type": "application/json" },
-          });
+                headers: { 
+                    "Content-Type": "application/json"
+                },
+            });
 
           console.log("Full Response:", response);
           console.log("Response Data:", response.data); 

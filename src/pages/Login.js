@@ -18,15 +18,19 @@ function Login() {
       if(response.data.success){
         message.success(response.data.message);
         localStorage.setItem("token",response.data.data);
+        console.log("Stored Token:", localStorage.getItem("token")); 
         // if successful then store token in the localstorage to check if logged in user is correct or not.
         // if successfully logged in, then user should navigate to the homepage
         // window.location.href="/";
         navigate("/"); 
       }else{
         message.error(response.data.message);
+        message.error("error");
+        console.log("error message: token not generated");
       }
     }catch(error){
       dispatch(HideLoading());
+      console.error("Login Error:", error);
       message.error(error.message);
     }
 };

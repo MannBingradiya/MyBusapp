@@ -14,28 +14,41 @@ function ProtectedRoute({ children }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false); // Prevents instant logout
 
     const validateToken = async () => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            handleLogout("Session expired. Please log in again.");
+            return;
+        }
+
         try {
             dispatch(ShowLoading());
+
             const response = await axios.post("/api/users/get-user-by-id", {}, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
+
             dispatch(HideLoading());
 
-            if (response.data.success) {
+            if (response.status === 200 && response.data.success) {
                 dispatch(SetUser(response.data.data));
-                setIsAuthenticated(true); // ✅ Mark as authenticated after successful response
+                setIsAuthenticated(true); // ✅ Mark as authenticated
             } else {
-                handleLogout("Session expired. Please log in again.");
+                handleLogout(response.data.message || "Session expired. Please log in again.");
             }
         } catch (error) {
             dispatch(HideLoading());
 
-            if (error.response && error.response.status === 401) {
-                handleLogout("Session expired. Please log in again.");
+            if (error.response) {
+                if (error.response.status === 401) {
+                    handleLogout("Session expired. Please log in again.");
+                } else {
+                    message.error(error.response.data.message || "Something went wrong. Please try again.");
+                }
             } else {
-                message.error("Something went wrong. Please try again.");
+                message.error("Network error. Please check your connection.");
             }
         }
     };
@@ -47,18 +60,10 @@ function ProtectedRoute({ children }) {
     };
 
     useEffect(() => {
-        if (localStorage.getItem('token')) {
-            validateToken();
-        } else {
-            navigate('/login');
-        }
+        validateToken();
     }, []);
 
-    return (
-        <div>
-            {isAuthenticated && user && <DefaultLayout>{children}</DefaultLayout>}
-        </div>
-    );
+    return isAuthenticated && user ? <DefaultLayout>{children}</DefaultLayout> : null;
 }
 
 export default ProtectedRoute;

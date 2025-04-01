@@ -11,7 +11,7 @@ function ProtectedRoute({ children }) {
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.users);
     const navigate = useNavigate();
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // Prevents instant logout
+    const [isAuthenticated, setIsAuthenticated] = useState(null); // ✅ Use `null` for initial loading state
 
     const validateToken = async () => {
         const token = localStorage.getItem('token');
@@ -23,33 +23,22 @@ function ProtectedRoute({ children }) {
 
         try {
             dispatch(ShowLoading());
-
-            const response = await axios.post("/api/users/get-user-by-id", {}, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/get-user-by-id`, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
             dispatch(HideLoading());
 
-            if (response.status === 200 && response.data.success) {
+            if (response.data.success) {
                 dispatch(SetUser(response.data.data));
-                setIsAuthenticated(true); // ✅ Mark as authenticated
+                setIsAuthenticated(true);
             } else {
                 handleLogout(response.data.message || "Session expired. Please log in again.");
             }
         } catch (error) {
             dispatch(HideLoading());
-
-            if (error.response) {
-                if (error.response.status === 401) {
-                    handleLogout("Session expired. Please log in again.");
-                } else {
-                    message.error(error.response.data.message || "Something went wrong. Please try again.");
-                }
-            } else {
-                message.error("Network error. Please check your connection.");
-            }
+            handleLogout("Session expired. Please log in again.");
         }
     };
 
@@ -62,6 +51,11 @@ function ProtectedRoute({ children }) {
     useEffect(() => {
         validateToken();
     }, []);
+
+    // ✅ Show a loading message while checking authentication
+    if (isAuthenticated === null) {
+        return <h2>Loading...</h2>;
+    }
 
     return isAuthenticated && user ? <DefaultLayout>{children}</DefaultLayout> : null;
 }

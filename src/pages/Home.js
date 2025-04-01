@@ -5,6 +5,7 @@ import Bus from '../components/Bus';
 import { axiosInstance } from '../helpers/axiosInstance';
 import { HideLoading, ShowLoading } from '../redux/alertsSlice';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();

@@ -19,10 +19,13 @@ function Login() {
         message.success(response.data.message);
         localStorage.setItem("token",response.data.data);
         console.log("Stored Token:", localStorage.getItem("token")); 
+        console.log("Redirecting to homepage...");
         // if successful then store token in the localstorage to check if logged in user is correct or not.
         // if successfully logged in, then user should navigate to the homepage
-        // window.location.href="/";
-        navigate("/"); 
+        // window.location.href="/";  
+        setTimeout(() => { 
+          navigate("/");
+      }, 2000);
       }else{
         message.error(response.data.message);
         message.error("error");

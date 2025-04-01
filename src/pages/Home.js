@@ -12,6 +12,13 @@ function Home() {
   const dispatch = useDispatch();
   const [buses, setBuses] = useState([]);
   const getBuses = async () => {
+    const token = localStorage.getItem("token");
+  
+    if (!token) {
+      message.error("No token found, redirecting to login...");
+      window.location.href = "/login";
+      return;
+    }
     const tempFilters = {};
     if (filters) {
       Object.keys(filters).forEach((key) => {
@@ -22,7 +29,7 @@ function Home() {
     }
     try {
       dispatch(ShowLoading());
-      const response = await axios.post("/api/buses/get-all-buses",
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/buses/get-all-buses`,
        { filters: tempFilters },
        {
         headers:{

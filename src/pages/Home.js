@@ -12,13 +12,6 @@ function Home() {
   const dispatch = useDispatch();
   const [buses, setBuses] = useState([]);
   const getBuses = async () => {
-    const token = localStorage.getItem("token");
-  
-    if (!token) {
-      message.error("No token found, redirecting to login...");
-      window.location.href = "/login";
-      return;
-    }
     const tempFilters = {};
     if (filters) {
       Object.keys(filters).forEach((key) => {
@@ -50,6 +43,16 @@ function Home() {
   };
 
   useEffect(() => {
+    // getBuses();
+    // Check if the token is present
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.log("No token found, redirecting to login...");
+      navigate("/login"); // Redirect to login if no token is found
+      return;
+    }
+
+    // Fetch buses only if token is valid
     getBuses();
   }, []);
 

@@ -12,6 +12,12 @@ function Home() {
   const dispatch = useDispatch();
   const [buses, setBuses] = useState([]);
   const getBuses = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.log("No token found, redirecting to login...");
+      navigate("/login");
+      return;
+    }
     const tempFilters = {};
     if (filters) {
       Object.keys(filters).forEach((key) => {
@@ -43,13 +49,13 @@ function Home() {
   };
 
   useEffect(() => {
-    // getBuses();
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.log("No token found, redirecting to login...");
-      navigate("/login"); // Redirect to login if no token is found
-      return;
-    }
+    getBuses();
+    // const token = localStorage.getItem("token");
+    // if (!token) {
+    //   console.log("No token found, redirecting to login...");
+    //   navigate("/login"); // Redirect to login if no token is found
+    //   return;
+    // }
   }, []);
 
   return (

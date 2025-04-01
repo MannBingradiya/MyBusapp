@@ -23,7 +23,7 @@ function App() {
       {loading && <Loader />}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<ProtectedRoute><Home/></ProtectedRoute>} />
+          <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>} />
           <Route path="/book-now/:id" element={<ProtectedRoute><BookNow/></ProtectedRoute>} />
           <Route path="/bookings" element={<ProtectedRoute><Bookings/></ProtectedRoute>} />
          

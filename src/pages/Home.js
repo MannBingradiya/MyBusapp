@@ -43,7 +43,13 @@ function Home() {
   };
 
   useEffect(() => {
-    getBuses();
+    // getBuses();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.log("No token found, redirecting to login...");
+      navigate("/login"); // Redirect to login if no token is found
+      return;
+    }
   }, []);
 
   return (

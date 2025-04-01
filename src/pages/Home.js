@@ -7,6 +7,14 @@ import { HideLoading, ShowLoading } from '../redux/alertsSlice';
 import axios from 'axios';
 
 function Home() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      message.error("Session expired, please login again.");
+      navigate("/login");
+    }
+  }, []);
   const { user } = useSelector((state) => state.users);
   const [filters, setFilters] = useState({});
   const dispatch = useDispatch();

@@ -24,9 +24,8 @@ function Login() {
         // if successfully logged in, then user should navigate to the homepage
         // window.location.href="/";  
         setTimeout(() => { 
-          // navigate("/");
-          window.location.href = "/";
-      }, 2000);
+            navigate("/home"); 
+        }, 2000);
       }else{
         message.error(response.data.message);
         message.error("error");

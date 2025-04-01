@@ -14,12 +14,14 @@ function Login() {
       dispatch(ShowLoading());
       const response= await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, values);
       dispatch(HideLoading());
+      console.log("Login Response:", response.data); 
       if(response.data.success){
         message.success(response.data.message);
         localStorage.setItem("token",response.data.data);
         // if successful then store token in the localstorage to check if logged in user is correct or not.
         // if successfully logged in, then user should navigate to the homepage
-        window.location.href="/";
+        // window.location.href="/";
+        navigate("/"); 
       }else{
         message.error(response.data.message);
       }
